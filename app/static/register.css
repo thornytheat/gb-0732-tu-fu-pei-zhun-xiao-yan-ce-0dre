@@ -43,6 +43,17 @@ sup a { font: 10px var(--mono); padding-inline-start: 3px; color: var(--accent);
 .notes li { scroll-margin-top: var(--bar); }
 .notes li::marker { font: 11px var(--mono); color: var(--accent); }
 .statusbar { position: sticky; bottom: 0; z-index: 4; display: flex; justify-content: space-between; gap: 6px; flex-wrap: wrap; background: var(--panel-2); border-top: 1px solid var(--line-2); padding: 5px clamp(14px, 2.2vw, 34px); min-height: 27px; font: 11px/1.45 var(--mono); color: var(--ink-2); }
+.ruling-intro { margin-bottom: 12px; color: var(--ink-2); }
+.ruling-trigger { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; padding: var(--pad); background: var(--panel-2); border: 1px solid var(--line-2); }
+.ruling-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; justify-content: space-between; margin-bottom: 10px; font: 11px var(--mono); color: var(--ink-3); }
+.ruling-policy { background: var(--accent-soft); border: 1px solid var(--line-2); border-left: 3px solid var(--accent); padding: 10px 14px; margin-bottom: 14px; }
+.ruling-policy p { display: flex; gap: 10px; font-size: 12px; padding: 3px 0; }
+.ruling-policy strong { flex: none; min-width: 72px; color: var(--accent); }
+.ruling-policy span { color: var(--ink-2); }
+.seam-switch { display: flex; gap: 8px; margin: 8px 0 4px; }
+.ruling-sign { margin-top: 14px; }
+.status[data-status="FIT"] { background: var(--ok); color: var(--accent-ink); }
+.status[data-status="BLOCKED"] { background: var(--warn); color: var(--accent-ink); }
 @media (max-width: 1050px) {
   .app { grid-template-columns: 150px minmax(0, 1fr); }
   :root { --pad: 12px; --gap: 9px; }

@@ -30,6 +30,11 @@ REASONS = {
     'MODEL_UNAVAILABLE': '至少一幅图缺少重估模型',
     'GAP_OVER_LIMIT': '地面拼缝偏差超限',
     'NO_EDGE_REGISTERED': '未登记独立拼缝',
+    'FIELD_MODEL_BLOCKED': '外业原件无可用模型，不能沿用',
+    'FIELD_CORRECTION_PRIORITY': '外业原件保留唯一现场修正，整幅沿用',
+    'REFERENCE_SOURCE_MIX': '校准副本点数更全但来源统一为誊录，逐点拼合会混源',
+    'MOSAIC_GAP': '裁定基准卷拼缝偏差超限',
+    'MOSAIC_BLOCKED': '裁定基准卷拼缝缺少可用模型或见证不足',
 }
 
 

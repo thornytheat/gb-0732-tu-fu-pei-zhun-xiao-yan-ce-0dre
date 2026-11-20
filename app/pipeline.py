@@ -11,6 +11,7 @@ from app.modules.seams.service import check_seams
 class Survey:
     def __init__(self, settings, options):
         self.options = options
+        self.dataset = options.dataset
         self.bundle = acquire_bundle(settings.sample_root, options.dataset)
 
     @cached_property

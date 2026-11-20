@@ -1,5 +1,6 @@
 import {badge, el, fmt, reason, renderLedger} from './ledgers.js';
 import {drawAtlas, drawEdge} from './plots.js';
+import {renderBaseline} from './baseline.js';
 
 const byId = id => document.getElementById(id);
 const form = byId('run-form');
@@ -113,6 +114,12 @@ function renderDetail() {
   }
   byId('detail-title').textContent = links.find(link => link.dataset.section === state.section).textContent.trim().replace(/^\d+/, '');
   byId('detail-meta').textContent = state.snapshot ? (state.selected ? `图版 ${state.selected}` : '全册') : '档件预检';
+  if (state.section === 'baseline') {
+    byId('detail-meta').textContent = '外业原件 × 校准副本';
+    renderBaseline(byId('detail-content'));
+    renderSign();
+    return;
+  }
   const limit = state.snapshot?.manifest.parameters.control_limit_m || parameters().control_limit_m;
   renderLedger(byId('detail-content'), state.section, {...state, limit});
   renderSign();
@@ -169,7 +176,7 @@ async function selectSection(section, focus = false) {
   renderDetail();
   if (focus) byId('detail-title').focus({preventScroll: true});
   if (focus) byId('section-detail').scrollIntoView({block: 'start'});
-  if (state.snapshot || section === 'review' || !form.reportValidity()) return;
+  if (state.snapshot || section === 'review' || section === 'baseline' || !form.reportValidity()) return;
   byId('detail-content').replaceChildren(el('p', '正在校验该章节。'));
   try {
     const value = await request(`/api/${section}?${new URLSearchParams(parameters())}`);

@@ -14,6 +14,7 @@
 | M5 离群重估 | 查看稳健重估后的残差及排除理由 | `GET /api/refit` | `app/modules/refit/consensus.py` `app/modules/refit/service.py` | `tests/test_refit.py` |
 | M6 接缝验核 | 验证相邻边覆盖、次序与偏差 | `GET /api/seams` | `app/modules/seams/witnesses.py` `app/modules/seams/geometry.py` `app/modules/seams/service.py` | `tests/test_seams.py` |
 | M7 图幅签审 | 勾稽三表、签审、留存和导出 | `POST /api/review/runs` | `app/modules/review/decisions.py` `app/modules/review/reconcile.py` `app/modules/review/service.py` | `tests/test_review.py` |
+| M8 基准对照裁定 | 逐幅在外业原件与校准副本间裁定唯一基准、拼缝重核、裁定签审 | `POST /api/baseline/rulings` | `app/modules/baseline/policy.py` `app/modules/baseline/mosaic.py` `app/modules/baseline/service.py` | `tests/test_baseline.py` |
 
 ## 陷阱登记
 
@@ -39,6 +40,11 @@
 | TRAP-28 | `sample_data/field/ground.csv` 的河西 P08 偏离 | 初算剔除误伤多点 | 稳定多数重估恢复良点 | `app/modules/refit/consensus.py` | `tests/test_refit.py::test_refit_recovers_good_points_that_initial_fit_would_drop` |
 | TRAP-29 | `sample_data/field/witness.csv` 的 `HX-QS` | 小训练残差冒充拼缝通过 | 两侧独立投影后取最大平面差 | `app/modules/seams/geometry.py` | `tests/test_seams.py::test_independent_edge_fails_even_when_both_training_residuals_are_small` |
 | TRAP-30 | `sample_data/field/witness.csv` 测试副本用旧控制点名冒充见证 | 重复证据进入独立核验 | 用规范名和像素索引排除 | `app/modules/seams/witnesses.py` | `tests/test_seams.py::test_pseudo_witness_reusing_a_control_alias_is_excluded` |
+| TRAP-31 | 校准副本 48 点全采信、四边全过，看似可整册采用 | 丢掉外业原件唯一现场修正 | 原件可拟合的图幅一律沿用原件，仅原件不可用的图幅整幅改用副本 | `app/modules/baseline/policy.py` | `tests/test_baseline.py::test_field_correction_is_kept_on_fit_sheets_and_documented` |
+| TRAP-32 | 逐点挑两版更好的点拼成混合模型 | 来源混成一册，无法追溯 | 每幅只取单一来源整幅采用，`mixing_allowed` 恒假 | `app/modules/baseline/policy.py` | `tests/test_baseline.py::test_each_sheet_adopts_a_single_edition_and_never_mixes` |
+| TRAP-33 | 裁定卷拼缝沿用单册模型表 | 双井 0432 在原件无模型，QS-SJ 永远阻断 | 按各幅采用版重建训练索引并逐站投影测距 | `app/modules/baseline/mosaic.py` | `tests/test_baseline.py::test_mosaic_seam_conclusions_cover_every_registered_edge` |
+| TRAP-34 | 同一对照重跑再插一册或覆盖签名 | 裁定册越攒越多、首签丢失 | 编号由两版字节与阈值决定，命中即回读旧册不写入 | `app/modules/baseline/service.py` `app/store.py` | `tests/test_baseline.py::test_create_ruling_endpoint_shape_and_idempotency` `tests/test_baseline.py::test_rerun_keeps_recorded_signatures` |
+| TRAP-35 | 裁定写入中途失败 | 留下半册或覆盖上一册 | 单事务整册插入，失败整笔回滚，上一册原样可读 | `app/store.py` | `tests/test_baseline.py::test_save_failure_rolls_back_and_leaves_no_partial_volume` `tests/test_baseline.py::test_failed_save_of_a_new_comparison_restores_the_previous_volume` |
 
 ## 对账
 

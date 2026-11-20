@@ -24,7 +24,7 @@ export function badge(value) {
   return node;
 }
 
-function table(columns, rows) {
+export function table(columns, rows) {
   const frame = el('div', null, 'table-wrap');
   const ledger = el('table', null, 'ledger');
   const thead = ledger.createTHead().insertRow();
